@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -30,9 +31,12 @@ public class Board {
     @ColumnDefault("0")
     private int count;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId")
     private User user;
+
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)  // EAGER 전략으로 하면 해당 정보를 무조건 불러옴. default는 LAZY
+    private List<Reply> reply;
 
     @CreationTimestamp
     private Timestamp createDate;
